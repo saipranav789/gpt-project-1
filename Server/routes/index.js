@@ -18,11 +18,17 @@ const constructorMethod = (app) => {
   // User registration
   app.post("/register", async (req, res) => {
     const { username, password, is_admin } = req.body;
-    const password_hash = await bcrypt.hash(password, 10);
+    console.log(username, password, "heree!");
+    if (!username || !password) {
+      return res
+        .status(400)
+        .json({ error: "Username and password are required" });
+    }
     try {
+      const password_hash = await bcrypt.hash(password, 10);
       const result = await db.query(
         "INSERT INTO users (username, password_hash, is_admin) VALUES ($1, $2, $3) RETURNING *",
-        [username, password_hash, is_admin]
+        [username, password_hash, is_admin || false]
       );
       const token = generateToken(result.rows[0]);
       res.json({ token });
@@ -35,6 +41,11 @@ const constructorMethod = (app) => {
   // User login
   app.post("/login", async (req, res) => {
     const { username, password } = req.body;
+    if (!username || !password) {
+      return res
+        .status(400)
+        .json({ error: "Username and password are required" });
+    }
     try {
       const result = await db.query("SELECT * FROM users WHERE username = $1", [
         username,
@@ -57,7 +68,7 @@ const constructorMethod = (app) => {
 
   // Middleware to protect routes
   const authenticateJWT = (req, res, next) => {
-    const token = req.header("Authorization").replace("Bearer ", "");
+    const token = req.header("Authorization")?.replace("Bearer ", "");
     if (!token) {
       return res.status(401).json({ error: "Access denied, token missing!" });
     } else {
@@ -74,17 +85,6 @@ const constructorMethod = (app) => {
   // Protected route example
   app.get("/protected", authenticateJWT, async (req, res) => {
     res.json({ message: "This is a protected route", user: req.user });
-  });
-
-  // Other routes (posts, users, etc.) can also use authenticateJWT middleware to protect them
-  app.get("/posts", authenticateJWT, async (req, res) => {
-    try {
-      const result = await db.query("SELECT * FROM posts");
-      res.json(result.rows);
-    } catch (err) {
-      console.error(err);
-      res.status(500).send("Server error");
-    }
   });
   // Get all posts
   app.get("/posts", async (req, res) => {
