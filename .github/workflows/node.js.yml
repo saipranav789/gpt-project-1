@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [18.x, 20.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -22,25 +22,22 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      # Install and build the Server project
-      - name: Install Server dependencies
-        run: |
-          cd Server
-          npm ci
+      # # Install and build the Server project
+      # - name: Install Server dependencies
+      #   run: |
+      #     cd Server
+      #     npm ci
 
       # - name: Start Server
       #   run: |
       #     cd Server
-      #     npm start 
-
+      #     npm start
 
       # Install and build the React project
       - name: Install React dependencies
         run: |
-          cd ..
           cd react
           npm ci
-
 
       - name: Test React
         run: |
