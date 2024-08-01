@@ -25,6 +25,7 @@ const FeedCard = (props) => {
             alert('Post has been deleted.');
             setIsDeleted(true);
             console.log(response.data);
+            props.fetchData(); // Refetch data after deletion
         } catch (error) {
             console.error('Error deleting post:', error);
             alert('User is not the owner!');
@@ -48,7 +49,10 @@ const FeedCard = (props) => {
                     </button>
                     <EditPostModal
                         isOpen={isEditModalOpen}
-                        onClose={() => setIsEditModalOpen(false)}
+                        onClose={() => {
+                            setIsEditModalOpen(false);
+                            props.fetchData(); // Refetch data after editing
+                        }}
                         postId={props.data.id}
                         currentContent={props.data.content}
                     />

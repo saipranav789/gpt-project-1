@@ -1,32 +1,56 @@
-import { useState , useEffect } from 'react';
-import useSignUp from '../hooks/useSignUp'
+import { useState } from 'react';
+import useSignUp from '../hooks/useSignUp';
+import validation from '../validation.js'; // Adjust the path to where your validation file is located
 
 const SignUp = () => {
-    const [email,setEmail] = useState('')
-    const [password,setPassword] = useState('')
-    const {signup , error ,isLoading} = useSignUp()
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [formError, setFormError] = useState('');
+    const { signup, error, isLoading } = useSignUp();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("email:",email,"password:", password)
-        await signup(email,password)
+        setFormError('');
+
+        try {
+            validation.checkEmail(email);
+            validation.checkPassword(password, confirmPassword);
+            await signup(email, password);
+        } catch (e) {
+            setFormError(e);
+        }
     };
 
     return (
-       
-            <form className="signup" onSubmit={handleSubmit}>
-                <h3>Sign Up</h3>
-                <label>Email:</label>
-                <input type="email" placeholder="Email" onChange={(e)=>setEmail(e.target.value)} value={email} />
-                <label>Password:</label>
-                <input type="password" placeholder="Password" onChange={(e)=>setPassword(e.target.value)} value={password} />
-                <button disabled={isLoading} type="submit">Sign Up</button>
-                {error&& <div className='error'>{error}</div>}
-            </form>
-      
+        <form className="signup" onSubmit={handleSubmit}>
+            <h3>Sign Up</h3>
+            <label>Email:</label>
+            <input
+                type="email"
+                placeholder="Email"
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+            />
+            <label>Password:</label>
+            <input
+                type="password"
+                placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+            />
+            <label>Confirm Password:</label>
+            <input
+                type="password"
+                placeholder="Confirm Password"
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                value={confirmPassword}
+            />
+            <button disabled={isLoading} type="submit">Sign Up</button>
+            {formError && <div className='error'>{formError}</div>}
+            {error && <div className='error'>{error}</div>}
+        </form>
     );
 };
-    
 
-
-export default SignUp
+export default SignUp;

@@ -42,7 +42,7 @@ const HomePage = () => {
       <section className='feed'>
         <div>
           {data && data.map((item) => (
-            <FeedCard key={item.id} data={item} />
+            <FeedCard key={item.id} data={item} fetchData={fetchData} />
           ))}
         </div>
       </section>

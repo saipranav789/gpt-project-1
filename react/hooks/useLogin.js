@@ -25,7 +25,7 @@ const useLogin = () => {
         dispatch({ type: "LOGIN", payload: json });
       }
     } catch (error) {
-      setError(error.message);
+      setError("Login Failed: Incorrect Username/Password");
     } finally {
       setIsLoading(false);
     }
