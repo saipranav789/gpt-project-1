@@ -7,7 +7,7 @@ on:
   #   branches: ["main"]
 
 jobs:
-  build:
+  tests:
     runs-on: ubuntu-latest
 
     strategy:
@@ -16,13 +16,11 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      - uses: actions/checkout@v4
-
+      - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "npm"
 
       # Install and build the Server project
       - name: Install Server dependencies
@@ -30,16 +28,11 @@ jobs:
           cd Server
           npm ci
 
-      - name: Build Server
+      - name: Start Server
         run: |
           cd Server
-          npm run build --if-present
+          npm start 
 
-      # Uncomment if you want to run tests for the Server project
-      # - name: Test Server
-      #   run: |
-      #     cd Server
-      #     npm test
 
       # Install and build the React project
       - name: Install React dependencies
@@ -48,10 +41,6 @@ jobs:
           cd react
           npm ci
 
-      - name: Build React
-        run: |
-          cd react
-          npm run build --if-present
 
       - name: Test React
         run: |
