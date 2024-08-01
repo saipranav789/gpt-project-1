@@ -11,6 +11,10 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
+app.use((req, res, next) => {
+  console.log(req.path, req.method);
+  next();
+});
 
 app.listen(3000, () => {
   console.log("We've now got a server!");
