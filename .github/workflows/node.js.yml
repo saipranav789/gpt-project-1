@@ -28,10 +28,10 @@ jobs:
           cd Server
           npm ci
 
-      - name: Start Server
-        run: |
-          cd Server
-          npm start 
+      # - name: Start Server
+      #   run: |
+      #     cd Server
+      #     npm start 
 
 
       # Install and build the React project
