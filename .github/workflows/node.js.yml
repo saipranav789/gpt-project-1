@@ -2,52 +2,58 @@ name: GPT Project CI
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
+  # pull_request:
+  #   branches: ["main"]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        node-version: [18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+      - uses: actions/checkout@v4
 
-    # Install and build the Server project
-    - name: Install Server dependencies
-      run: |
-        cd Server
-        npm ci
-    - name: Build Server
-      run: |
-        cd Server
-        npm run build --if-present
-    - name: Test Server
-      run: |
-        cd Server
-        npm test
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
 
-    # Install and build the React project
-    - name: Install React dependencies
-      run: |
-        cd react
-        npm ci
-    - name: Build React
-      run: |
-        cd react
-        npm run build --if-present
-    - name: Test React
-      run: |
-        cd react
-        npm test
+      # Install and build the Server project
+      - name: Install Server dependencies
+        run: |
+          cd Server
+          npm ci
+
+      - name: Build Server
+        run: |
+          cd Server
+          npm run build --if-present
+
+      # Uncomment if you want to run tests for the Server project
+      # - name: Test Server
+      #   run: |
+      #     cd Server
+      #     npm test
+
+      # Install and build the React project
+      - name: Install React dependencies
+        run: |
+          cd ..
+          cd react
+          npm ci
+
+      - name: Build React
+        run: |
+          cd react
+          npm run build --if-present
+
+      - name: Test React
+        run: |
+          cd react
+          npm test

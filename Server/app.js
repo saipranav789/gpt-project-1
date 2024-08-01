@@ -21,3 +21,5 @@ app.listen(3000, () => {
   console.log("Routes will be running on http://localhost:3000");
 });
 configRoutes(app);
+
+export default app;
