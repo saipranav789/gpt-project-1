@@ -19,17 +19,30 @@ const constructorMethod = (app) => {
     if (!email || !password) {
       return res.status(400).json({ error: "Email and password are required" });
     }
+
     try {
+      // Check if the email is already in use
+      const existingUser = await db.query(
+        "SELECT * FROM users WHERE email = $1",
+        [email]
+      );
+      if (existingUser.rows.length > 0) {
+        return res.status(400).json({ error: "Email is already registered" });
+      }
+
+      // Hash the password and insert the new user into the database
       const hashedPassword = await bcrypt.hash(password, 10);
       const result = await db.query(
         "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *",
         [email, hashedPassword]
       );
+      // Generate a token for the new user
       const token = generateToken(result.rows[0]);
-      res.json({ token });
+      //   res.json({ token });
+      res.json({ token, email: email });
     } catch (err) {
       console.error(err);
-      res.status(500).send("Server error");
+      res.status(500).send(err);
     }
   });
 

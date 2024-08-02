@@ -18,12 +18,16 @@ const useSignUp = () => {
       });
 
       // Since axios already parses the response, no need to call .json()
-      const json = response.data;
+      const json = response;
+      if (json) {
+        // Save the user to local storage
+        localStorage.setItem("user", JSON.stringify(json));
 
-      // Save the user to local storage
-      localStorage.setItem("user", JSON.stringify(json));
-      // Update the auth context
-      dispatch({ type: "LOGIN", payload: json });
+        // Update the auth context after a 2 second delay
+        setTimeout(() => {
+          dispatch({ type: "LOGIN", payload: json });
+        }, 2000);
+      }
     } catch (error) {
       setError(error.message);
     } finally {

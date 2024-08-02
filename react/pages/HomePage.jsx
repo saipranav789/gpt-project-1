@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,useContext} from 'react';
 import axios from 'axios';
 import FeedCard from '../components/FeedCard/FeedCard';
 import PostModal from '../components/PostModal/PostModal';
-
+import { AuthContext } from '../context/AuthContext';
 const HomePage = () => {
   const [data, setData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const { user } = useContext(AuthContext);
   // Function to fetch data from the API
   const fetchData = async () => {
     try {
@@ -33,7 +33,7 @@ const HomePage = () => {
 
   return (
     <div>
-      <p>You are on the home page after logging in</p>
+      <p>You are on the home page after logging in! Welcome {user.data.email}</p>
       <div style={{ padding: '20px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
         <h1>Bulletin Board</h1>
         <button className='style-button' onClick={openModal}>Create New Post</button>

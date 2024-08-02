@@ -8,7 +8,7 @@ const FeedCard = (props) => {
     const [isDeleted, setIsDeleted] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-    if (user) {
+    if (user && user.data && user.data.token) {
         console.log(user.data.token);
     }
 
@@ -37,8 +37,8 @@ const FeedCard = (props) => {
 
     return (
         <div className="card" style={styles.card}>
-            <h2>{props.data.email}</h2>
-            <p>{props.data.content}</p>
+            <h2>{props.data?.email}</h2>
+            <p>{props.data?.content}</p>
             {user && user.data.email === props.data.email && (
                 <>
                     <button className='style-button' onClick={() => handleDelete(props.data.id)}>
