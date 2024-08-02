@@ -28,7 +28,7 @@ const LandingPage = () => {
                 <div>
                     {data && data.map((item) => (
                         <FeedCard key={item.id} data={item} />
-                    ))}
+                    )).reverse()}
                 </div>
             </section>
         </div>

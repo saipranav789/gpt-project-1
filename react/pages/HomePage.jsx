@@ -43,7 +43,7 @@ const HomePage = () => {
         <div>
           {data && data.map((item) => (
             <FeedCard key={item.id} data={item} fetchData={fetchData} />
-          ))}
+          )).reverse()}
         </div>
       </section>
     </div>
