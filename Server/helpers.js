@@ -11,8 +11,6 @@ const helpers = {
   },
 
   checkStringArray(arr, varName) {
-    //We will allow an empty array for this,
-    //if it's not empty, we will make sure all tags are strings
     if (!arr || !Array.isArray(arr))
       throw `You must provide an array of ${varName}`;
     for (let i in arr) {

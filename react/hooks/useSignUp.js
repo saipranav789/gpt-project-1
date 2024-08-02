@@ -23,10 +23,8 @@ const useSignUp = () => {
         // Save the user to local storage
         localStorage.setItem("user", JSON.stringify(json));
 
-        // Update the auth context after a 2 second delay
-        setTimeout(() => {
-          dispatch({ type: "LOGIN", payload: json });
-        }, 2000);
+        // Update the auth context
+        dispatch({ type: "LOGIN", payload: json });
       }
     } catch (error) {
       setError(error.message);

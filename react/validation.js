@@ -17,6 +17,14 @@ const validation = {
     return email;
   },
 
+  checkAdpEmail(email) {
+    email = this.checkEmail(email);
+    const adpEmailRegex = /^[^\s@]+@adp\.com$/i;
+    if (!adpEmailRegex.test(email))
+      throw "Error: You need to register with ADP associate email";
+    return email;
+  },
+
   checkPassword(password, confirmPassword) {
     password = this.checkString(password, "password");
     confirmPassword = this.checkString(confirmPassword, "confirmPassword");

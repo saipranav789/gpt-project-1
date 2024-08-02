@@ -14,7 +14,7 @@ const SignUp = () => {
         setFormError('');
 
         try {
-            validation.checkEmail(email);
+            validation.checkAdpEmail(email);
             validation.checkPassword(password, confirmPassword);
             await signup(email, password);
         } catch (e) {
